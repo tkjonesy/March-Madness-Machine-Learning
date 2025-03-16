@@ -1,4 +1,7 @@
 import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+import seaborn as sns
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import log_loss
 from sklearn.metrics import brier_score_loss
@@ -36,10 +39,24 @@ if __name__ == "__main__":
     # Create input features
     RegSeasonFeatures = createFeatures(RegSeasonDetail)
 
+    # Create correlation matrix and locate highly correlated features
+    corrs = round(RegSeasonFeatures.corr(), 2).abs()
+    upper = corrs.where(np.triu(np.ones(corrs.shape), k=1).astype(bool))
+
+    # Find pairs with correlation >= 0.7 and include the correlation score
+    highCorrPairs = [(col1, col2, upper.loc[col2, col1])
+                     for col1 in upper.columns
+                     for col2 in upper.index
+                     if upper.loc[col2, col1] >= 0.7]
+
+    # Display the results
+    for pair in highCorrPairs:
+        print(pair)
+
     # Handle historical tournament data
     TourneyInput = splitHistTournamentData(compactTourn)
 
-    # Calculate historical differneces for training
+    # Calculate historical differences for training
     histData = calculateDifferenceHistTourn(TourneyInput, RegSeasonFeatures)
 
     # Setup train test split
@@ -48,7 +65,7 @@ if __name__ == "__main__":
     # Setup and train Logistic Regression model
     model = LogisticRegression(
         C=1,
-        max_iter=100,
+        max_iter=1000,
         solver='saga',
         tol=0.0001
     )

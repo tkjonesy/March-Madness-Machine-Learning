@@ -1,4 +1,5 @@
 import pandas as pd
+from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
@@ -94,8 +95,8 @@ def createFeatures(df):
     RegSeasonFeatures = pd.DataFrame()
 
     # Create ___ per game stat for each boxscore stat
-    stats = ['Score', 'OppScore', 'NumOT', 'FGM', 'FGA', 'FGM3', 'FGA3', 'FTM', 'FTA',
-             'OR', 'DR', 'Ast', 'TO', 'Stl', 'Blk', 'PF', 'OppFGM', 'OppFGA',
+    stats = ['Score', 'OppScore', 'NumOT', 'FGA', 'FGM3', 'FGA3', 'FTM', 'FTA',
+             'OR', 'DR', 'Ast', 'TO', 'Stl', 'Blk', 'PF', 'OppFGA',
              'OppFGM3', 'OppFGA3', 'OppFTM', 'OppFTA', 'OppOR', 'OppDR', 'OppAst', 'OppTO',
              'OppStl', 'OppBlk', 'OppPF']
 
@@ -107,10 +108,11 @@ def createFeatures(df):
     RegSeasonFeatures['W/L'] = df['Wins'] / df['Losses']  # Win/Loss ratio
     RegSeasonFeatures['MOV'] = (df['Score'] - df['OppScore']) / df['NumGames']  # Margin of victory
     RegSeasonFeatures['TORatio'] = RegSeasonFeatures['TO_PerGame'] / RegSeasonFeatures['OppTO_PerGame']  # Turnover ratio
-    RegSeasonFeatures['FGM%'] = df['FGM'] / df['FGA']  # Scoring efficiency 
+    RegSeasonFeatures['FGM%'] = df['FGM'] / df['FGA']  # Scoring efficiency
     RegSeasonFeatures['FG3%M'] = df['FGM3'] / df['FGA3']  # 3-Point efficiency
     RegSeasonFeatures['FGA3%'] = df['FGA3'] / df['FGA']  # 3-Point attempt rate
     RegSeasonFeatures['FTM%'] = df['FTM'] / df['FTA']  # Free throw makes %
+    RegSeasonFeatures['OppFTM%'] = df['OppFTM'] / df['OppFTA']  # Opponent free throw makes %
     RegSeasonFeatures['FTA%'] = df['FTA'] / df['FGA']  # Free throw attempt rate
     RegSeasonFeatures['OppFTA%'] = df['OppFTA'] / df['OppFGA']  # Opponent free throw attempt rate
     RegSeasonFeatures['OR%'] = df['OR'] / (df['OR'] + df['OppDR'])  # Offensive rebound %
