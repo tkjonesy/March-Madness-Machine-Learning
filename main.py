@@ -13,8 +13,17 @@ from functions import createFeatures
 from functions import splitHistTournamentData
 from functions import calculateDifferenceHistTourn
 from functions import trainTestSplit
+from functions import splitSubmission
+from functions import calculateDifferenceFinal
+from functions import combinePredictions
+from functions import addPredsWithNames
 
 if __name__ == "__main__":
+    # Competition input
+    finalPairings = pd.read_csv('submissions/SampleSubmissionStage2.csv')
+    finalPairings.drop(columns=['Pred'], inplace=True)
+    finalPairings = splitSubmission(finalPairings)
+
     # Mens data import
     mRegDetail = pd.read_csv('data/men data/MRegularSeasonDetailedResults.csv')
     mTournCompact = pd.read_csv('data/men data/MNCAATourneyCompactResults.csv')
@@ -64,6 +73,7 @@ if __name__ == "__main__":
 
     # Setup and train Logistic Regression model
     model = LogisticRegression(
+        random_state=42,
         C=1,
         max_iter=1000,
         solver='saga',
@@ -81,3 +91,13 @@ if __name__ == "__main__":
     yPredProbaClass1 = yPredProba[:, 1]
     brierScore = brier_score_loss(yTest, yPredProbaClass1)
     print(f'Brier Score: {brierScore}')
+
+    # Setup for final prediction
+    finalInput = calculateDifferenceFinal(finalPairings, RegSeasonFeatures)
+    yFinalProba = model.predict_proba(finalInput)
+    submissionFinal = combinePredictions(finalPairings, yFinalProba)
+    submissionFinal.to_csv('submissions/submission1.csv', index=False)
+
+    # Create output to use for bracket with team names
+    bracketPredicitons = addPredsWithNames(finalPairings, yFinalProba, mNames, wNames)
+    bracketPredicitons.to_csv('submissions/bracketPredictions.csv', index=False)

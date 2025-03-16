@@ -184,3 +184,80 @@ def trainTestSplit(df):
     XTrain = scaler.fit_transform(XTrain)
     XTest = scaler.transform(XTest)
     return XTrain, XTest, yTrain, yTest
+
+
+'''
+Function to take example submission dataframe seperate one column into 3.
+param df: dataframe with single column 'ID'. Expects '2025_1101_1102' format
+return: dataframe with three columns ['Season', 'Team1', 'Team2']
+'''
+def splitSubmission(df):
+    splitData = df['ID'].str.split('_', expand=True)
+    df[['Season', 'Team1', 'Team2']] = splitData.astype(int)
+    df.drop(columns=['ID'], inplace=True)
+    return df
+
+
+'''
+Function to calculate difference in teams input features for final prediction
+param df1: dataframe of all team pairings for 2025
+param df2: dataframe of input features
+return: dataframe of differences for training
+'''
+def calculateDifferenceFinal(df1, df2):
+    # Merge two team stats from RegSeasonFeatures
+    TourneyFinal = df1.merge(df2, left_on=['Season', 'Team1'], right_index=True, suffixes=('', '_T1'))
+    TourneyFinal = TourneyFinal.merge(df2, left_on=['Season', 'Team2'], right_index=True, suffixes=('_T1', '_T2'))
+
+    # Drop columns that are not needed
+    TourneyFinal.drop(columns=['Season', 'Team1', 'Team2'], inplace=True)
+
+    # Calculate the differences (Team1 - Team2) for the features for input to logistic regression
+    featureCols = [col for col in df2 if col not in ['Season', 'TeamID']]
+    for col in featureCols:
+        TourneyFinal[col + '_Diff'] = TourneyFinal[col + '_T1'] - TourneyFinal[col + '_T2']
+
+    # Drop all _T1 and _T2, keep only _Diff
+    TourneyFinal = TourneyFinal[[col + '_Diff' for col in featureCols]]
+
+    # Scale final input
+    scaler = StandardScaler()
+    TourneyFinal = scaler.fit_transform(TourneyFinal)
+    return TourneyFinal
+
+
+'''
+Function to combine predictions to match the format of submission file for kaggle
+param df: dataframe with columns ['Season', 'Team1', 'Team2']
+param yProba: array of predicted probabilities
+return: dataframe with 'ID' and 'Pred' columns
+'''
+def combinePredictions(df, yProba):
+    # Reconstruct ID column
+    df['ID'] = df['Season'].astype(str) + '_' + df['Team1'].astype(str) + '_' + df['Team2'].astype(str)
+
+    # Add prediciton column
+    df['Pred'] = yProba[:, 1]
+    return df[['ID', 'Pred']]
+
+
+'''
+Function to add team names to prediction file to make a bracket with
+param df: dataframe with columns ['Season', 'Team1', 'Team2']
+param yProba: array of predicted probabilities
+param mNames: dataframe with columns ['TeamNameSpelling', 'TeamID']
+param wNames: dataframe with columns ['TeamNameSpelling', 'TeamID']
+'''
+def addPredsWithNames(df, yProba, mNames, wNames):
+    # Create mapping for team names and IDs
+    teamNames = pd.concat([mNames, wNames])
+    teamNames = teamNames.drop_duplicates(subset='TeamID', keep='first')
+    teamMap = teamNames.set_index('TeamID')['TeamNameSpelling']
+
+    # Add predicted probabilities to the DataFrame
+    df['Pred'] = yProba[:, 1]
+
+    # Map team IDs to team names
+    df['Team1Name'] = df['Team1'].map(teamMap)
+    df['Team2Name'] = df['Team2'].map(teamMap)
+    return df[['Team1', 'Team1Name', 'Team2', 'Team2Name', 'Pred']]
