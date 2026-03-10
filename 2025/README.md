@@ -1,33 +1,20 @@
-# March Madness with Machine Learning (2026)
+# March Madness with Machine Learning (2025)
 
-Welcome to my March Madness 2026 repository! This repository contains all the code and data I used to train a model to assist with the creation of my bracket for 2026 and entering the Kaggle [March Machine Learning Mania 2026](https://www.kaggle.com/competitions/march-machine-learning-mania-2026/).
+Welcome to my March Madness 2025 repository! This repository contains all the code and data I used to train a model to assist with the creation of my bracket for 2025 and entering the Kaggle [March Machine Learning Mania 2025](https://www.kaggle.com/competitions/march-machine-learning-mania-2025/).
 
 ## Table of Contents
 
-- [Results From 2025](#results-from-2025)
-- [Changes for 2026](#changes-for-2026)
 - [Data Preprocessing](#data-preprocessing)
+- [Logistic Regression](#logistic-regression)
 - [Hyperparameter Tuning](#hyperparameter-tuning)
-- [Results After Training](#results-after-training)
-
-## Results From 2025
-
-In 2025, I finished 906 out of 1727 teams. That's in the top 53%. I also scored a brier score of 0.16612, which was not too far from my target of 0.155 that year. While it wasn't enough to yield a higher percentile finish in the competition, it leaves plenty of room for growth this year!
-
-![Results from 2025](data/images/Results.2025.png "Results From 2025")
-
-## Changes for 2026
-This year I aim to make two major improvements:
-
-1. Test additional Machine Learning algorithms. My plan is to experiment with Random Forest, as well as Gradient Boosting. I have had a lot of success with Gradient Boosting since last year and hope to bring that to this competition.
-2. Experiment with more advanced and derived features. My strategy last year was create every feature I could and throw it at the model. That approach could work with some decision tree models but likely ended up overfitting. This year I want to create meaningful features that can replace a majority of the raw features to aid with reducing dimensionality. 
+- [Results](#results)
 
 ## Data Preprocessing
-For 2026 I have decided only to use [data](https://www.kaggle.com/competitions/march-machine-learning-mania-2026/data) provided by Kaggle to avoid having to handle any team spelling differences across datasets. Kaggle has very nicely assigned UIDs to each team to keep track of them throughout the seasons and without comparing strings.
+For 2025 I have decided only to use [data](https://www.kaggle.com/competitions/march-machine-learning-mania-2025/data) provided by Kaggle to avoid having to handle any team spelling differences across datasets. Kaggle has very nicely assigned UIDs to each team to keep track of them throughout the seasons and without comparing strings.
 
 For this year, most of the data will come from box score stats provided in [MRegularSeasonDetailedResults.csv](/data/men%20data/MRegularSeasonDetailedResults.csv):
 
-Description from [Kaggle:](https://www.kaggle.com/competitions/march-machine-learning-mania-2026/data)
+Description from [Kaggle:](https://www.kaggle.com/competitions/march-machine-learning-mania-2025/data)
 - **WFGM** - field goals made (by the winning team)
 - **WFGA** - field goals attempted (by the winning team)
 - **WFGM3** - three pointers made (by the winning team)
@@ -59,7 +46,7 @@ To get the features to feed to the model I started by getting a per game stat fo
 
 I then created the following additional features from the original box score stats that provides insights to how each team plays:
 - **Points Ratio** - ratio of points scored to opponent's points scored.
-- **Win/Loss Ratio** - self-explanatory.
+- **Win/Loss Ratio** - self explanatory.
 - **Margin of Victory** - on average, how close is the score of each game.
 - **Turnover Ratio** - ratio of TOs to OppTOs.
 - **Scoring Efficiency** - ratio of made shots to attempts. (How well does a team shoot in general)
@@ -71,14 +58,24 @@ I then created the following additional features from the original box score sta
 - **Offensive Rebound Rate** - ratio of ORs to all rebounds that happen while they are on offense. (How well a team attacks the glass on offense)
 - **Defensive Rebound Rate** - ratio of DRs to all rebounds that happen while they are on defense. (How well a team attacks the glass on defense)
 
-**New Features for 2026:**
-- Will update after the submission deadline.
-
-**Final Features for 2026 Competition**
-- Will update after the submission deadline.
+## Logistic Regression
+For this model I am using the [Scikit-Learn Logistic Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) framework.
 
 ## Hyperparameter Tuning
-Will update after the submission deadline.
+Here are the optimal parameters I have found using a grid search:
 
-## Results After Training
-Will update with results from training before the submission deadline.
+`C=1,
+max_iter=100,
+solver='saga',
+tol=0.0001
+`
+
+## Results
+Here are my current results combining men's and women's data into a single model:
+
+**Logistic Regression:**
+
+- Log Loss: 0.5749689958621383
+- Brier Score: 0.1984564004495349
+
+My target brier score is 0.155. Needless to say, I have some work to do.
