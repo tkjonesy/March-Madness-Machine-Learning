@@ -46,7 +46,7 @@ To get the features to feed to the model I started by getting a per game stat fo
 
 I then created the following additional features from the original box score stats that provides insights to how each team plays:
 - **Points Ratio** - ratio of points scored to opponent's points scored.
-- **Win/Loss Ratio** - self explanatory.
+- **Win/Loss Ratio** - self-explanatory.
 - **Margin of Victory** - on average, how close is the score of each game.
 - **Turnover Ratio** - ratio of TOs to OppTOs.
 - **Scoring Efficiency** - ratio of made shots to attempts. (How well does a team shoot in general)
