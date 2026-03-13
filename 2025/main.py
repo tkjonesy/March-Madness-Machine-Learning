@@ -25,14 +25,14 @@ if __name__ == "__main__":
     finalPairings = splitSubmission(finalPairings)
 
     # Mens data import
-    mRegDetail = pd.read_csv('../data/men data/MRegularSeasonDetailedResults.csv')
-    mTournCompact = pd.read_csv('../data/men data/MNCAATourneyCompactResults.csv')
-    mNames = pd.read_csv('../data/men data/MTeamSpellings.csv')
+    mRegDetail = pd.read_csv('../data/men/MRegularSeasonDetailedResults.csv')
+    mTournCompact = pd.read_csv('../data/men/MNCAATourneyCompactResults.csv')
+    mNames = pd.read_csv('../data/men/MTeamSpellings.csv')
 
     # Womens data import
-    wRegDetail = pd.read_csv('../data/women data/WRegularSeasonDetailedResults.csv')
-    wTournCompact = pd.read_csv('../data/women data/WNCAATourneyCompactResults.csv')
-    wNames = pd.read_csv('../data/women data/WTeamSpellings.csv')
+    wRegDetail = pd.read_csv('../data/women/WRegularSeasonDetailedResults.csv')
+    wTournCompact = pd.read_csv('../data/women/WNCAATourneyCompactResults.csv')
+    wNames = pd.read_csv('../data/women/WTeamSpellings.csv')
 
     # Combined data
     regDetail = mergeDataframes(mRegDetail, wRegDetail)
