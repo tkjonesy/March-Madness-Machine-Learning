@@ -19,20 +19,20 @@ from functions import combinePredictions
 from functions import addPredsWithNames
 
 if __name__ == "__main__":
-    # Competition input
-    finalPairings = pd.read_csv('../submissions/SampleSubmissionStage2.csv')
-    finalPairings.drop(columns=['Pred'], inplace=True)
-    finalPairings = splitSubmission(finalPairings)
+    # # Competition input
+    # finalPairings = pd.read_csv('../submissions/SampleSubmissionStage2.csv')
+    # finalPairings.drop(columns=['Pred'], inplace=True)
+    # finalPairings = splitSubmission(finalPairings)
 
     # Mens data import
-    mRegDetail = pd.read_csv('../data/men/MRegularSeasonDetailedResults.csv')
-    mTournCompact = pd.read_csv('../data/men/MNCAATourneyCompactResults.csv')
-    mNames = pd.read_csv('../data/men/MTeamSpellings.csv')
+    mRegDetail = pd.read_csv('data/men/MRegularSeasonDetailedResults.csv')
+    mTournCompact = pd.read_csv('data/men/MNCAATourneyCompactResults.csv')
+    mNames = pd.read_csv('data/men/MTeamSpellings.csv')
 
     # Womens data import
-    wRegDetail = pd.read_csv('../data/women/WRegularSeasonDetailedResults.csv')
-    wTournCompact = pd.read_csv('../data/women/WNCAATourneyCompactResults.csv')
-    wNames = pd.read_csv('../data/women/WTeamSpellings.csv')
+    wRegDetail = pd.read_csv('data/women/WRegularSeasonDetailedResults.csv')
+    wTournCompact = pd.read_csv('data/women/WNCAATourneyCompactResults.csv')
+    wNames = pd.read_csv('data/women/WTeamSpellings.csv')
 
     # Combined data
     regDetail = mergeDataframes(mRegDetail, wRegDetail)
@@ -87,17 +87,19 @@ if __name__ == "__main__":
 
     # Compute Metrics log loss and brier score
     logLoss = log_loss(yTest, yPredProba)
-    print(f'Log Loss: {logLoss}')
+    print(f'\nLog Loss: {logLoss}')
     yPredProbaClass1 = yPredProba[:, 1]
     brierScore = brier_score_loss(yTest, yPredProbaClass1)
     print(f'Brier Score: {brierScore}')
+    print(f'Training accuracy: {model.score(XTrain, yTrain)}')
+    print(f'Testing accuracy: {model.score(XTest, yTest)}')
 
-    # Setup for final prediction
-    finalInput = calculateDifferenceFinal(finalPairings, RegSeasonFeatures)
-    yFinalProba = model.predict_proba(finalInput)
-    submissionFinal = combinePredictions(finalPairings, yFinalProba)
-    submissionFinal.to_csv('submissions/submission1.csv', index=False)
-
-    # Create output to use for bracket with team names
-    bracketPredicitons = addPredsWithNames(finalPairings, yFinalProba, mNames, wNames)
-    bracketPredicitons.to_csv('submissions/bracketPredictions.csv', index=False)
+    # # Setup for final prediction
+    # finalInput = calculateDifferenceFinal(finalPairings, RegSeasonFeatures)
+    # yFinalProba = model.predict_proba(finalInput)
+    # submissionFinal = combinePredictions(finalPairings, yFinalProba)
+    # submissionFinal.to_csv('submissions/submission1.csv', index=False)
+    #
+    # # Create output to use for bracket with team names
+    # bracketPredicitons = addPredsWithNames(finalPairings, yFinalProba, mNames, wNames)
+    # bracketPredicitons.to_csv('submissions/bracketPredictions.csv', index=False)
