@@ -1,0 +1,71 @@
+base rf:
+Training accuracy: 1.0
+Testing accuracy from 2025: 0.7947761194029851
+Brier score: 0.1485689872371307
+Log Loss: 0.4602666643407967
+
+base cali rf:
+Training accuracy: 0.9940685413005272
+Testing accuracy from 2025: 0.8283582089552238
+Brier score: 0.14302205879109456
+Log Loss: 0.4508494394412207
+
+tuned rf:
+Training accuracy: 0.7710896309314587
+Testing accuracy from 2025: 0.8246268656716418
+Brier score: 0.1400813724813686
+Log Loss: 0.43262682528753094
+
+tuned cali rf:
+Training accuracy: 0.7675746924428822
+Testing accuracy from 2025: 0.8246268656716418
+Brier score: 0.1364807186983653
+Log Loss: 0.4295533418191083
+
+base lr:
+Training accuracy: 0.7429701230228472
+Testing accuracy from 2025: 0.7835820895522388
+Brier score: 0.14352755609982054
+Log Loss: 0.4391710240894436
+
+base cali lr:
+Training accuracy: 0.742311072056239
+Testing accuracy from 2025: 0.7835820895522388
+Brier score: 0.14367558321217244
+Log Loss: 0.44011240352236636
+
+tuned lr:
+Training accuracy: 0.742091388400703
+Testing accuracy from 2025: 0.7835820895522388
+Brier score: 0.14333072363930105
+Log Loss: 0.439259662857593
+
+tuned cali lr:
+Training accuracy: 0.742311072056239
+Testing accuracy from 2025: 0.7835820895522388
+Brier score: 0.14367558321217244
+Log Loss: 0.44011240352236636
+
+base xgb:
+Training accuracy: 0.9989015817223199
+Testing accuracy from 2025: 0.7910447761194029
+Brier score: 0.1495326588882486
+Log Loss: 0.4619086071538779
+
+base cali xgb:
+Training accuracy: 0.9995606326889279
+Testing accuracy from 2025: 0.7835820895522388
+Brier score: 0.15724012079797098
+Log Loss: 0.48868435068654525
+
+tuned xgb:
+Training accuracy: 0.8732425307557118
+Testing accuracy from 2025: 0.7649253731343284
+Brier score: 0.16024224367518175
+Log Loss: 0.48006289695262266
+
+tuned cali xgb:
+Training accuracy: 0.8569859402460457
+Testing accuracy from 2025: 0.7686567164179104
+Brier score: 0.16054347063635188
+Log Loss: 0.4825815040014587
