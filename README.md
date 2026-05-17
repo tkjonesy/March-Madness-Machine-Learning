@@ -215,7 +215,66 @@ For a train/test split I decided to have the test set be last year (2025) and le
 For the Kaggle competition I chose the model that seemed the least overfit and produced a strong Brier score for 2025: Tuned Calibrated Random Forest.
 
 ## Results From the Competition
-I will update this when the competition has concluded.
+
+In 2026, I finished 1567/3462. That's in the top 46%. I also scored a Brier score of 0.1404470. I am super happy with these results because I was able to improve even with the number of entrants doubling. I was able to improve my relative rank by 13% and improve my brier score from last year by 15%. 
+
+![Results from 2026](data/images/Results.2026.png "Results From 2026")
+
+Here are the brier scores for 2026 from all of my models:
+
+### Base Random Forest
+- **Brier Score**: 0.1457482
+
+### Base Calibrated Random Forest
+- **Brier Score**: 0.1403625
+
+### Tuned Random Forest
+- **Brier Score**: 0.1411566
+
+### Tuned Calibrated Random Forest
+- **Brier Score**: 0.1404471
+
+---
+
+### Base Logistic Regression
+- **Brier Score**: 0.1362875
+
+### Base Calibrated Logistic Regression
+- **Brier Score**: 0.1364781
+
+### Tuned Logistic Regression
+- **Brier Score**: 0.1364452
+
+### Tuned Calibrated Logistic Regression
+- **Brier Score**: 0.1364781
+
+---
+
+### Base XGBoost
+- **Brier Score**: 0.1494724
+
+### Base Calibrated XGBoost
+- **Brier Score**: 0.1507153
+
+### Tuned XGBoost
+- **Brier Score**: 0.1377406
+
+### Tuned Calibrated XGBoost
+- **Brier Score**: 0.1510974
 
 ## Insights and Improvements for Next Year
-I will update this when the competition has concluded.
+
+I think the biggest takeaway from this year is the over reliance on the difference in seeds between the teams. Seed difference was the number 1 feature across all models, and it wasn't close.
+
+![Feature Importance for RF](data/images/features.RF.png "Feature Importance for RF")
+
+It seems the most likely explanation is because I decided to combine men's and women's data to have a larger dataset. The only problem is women's game tend to follow the seed difference much more than men's games.
+
+- Men's historical upset rate: 27.311%
+- Women's historical upset rate: 21.142% 
+
+Men's game have a 29.184% higher upset rate relative to women's games. Looking at the actual picks in a bracket view, my models from this year mostly favor the team with the lowest seed.
+
+For next year I want to find a way to lower the reliance on this feature. A good solution could be including a binary feature that describes if the record is a men's or women's game so the model can learn different patterns. If that proves too complicated I can always create separate models to handle the men's and women's tournaments.
+
+Another improvement for next year could be adding in a custom elo rating. This could be a strong feature while also helping out with the previous issue. I have had a lot of success with other sports modeling projects implementing an elo system. This could be exactly what my model needs to be able to be worthy of a medal in this competition. I can't wait to see what I can do next year!
